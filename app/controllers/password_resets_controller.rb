@@ -5,12 +5,12 @@ class PasswordResetsController < ApplicationController
 
   # Step 2: Generate token and show the reset link
   def create
-    user = User.find_by(email: params[:email].to_s.downcase.strip)
+    user = User.find_by(login: params[:login].to_s.strip)
     if user
       token = user.generate_reset_token!
       @reset_url = edit_password_reset_url(token)
     else
-      flash.now[:alert] = "No account found with that email address."
+      flash.now[:alert] = "No account found with that username."
       render :new, status: :unprocessable_entity
     end
   end

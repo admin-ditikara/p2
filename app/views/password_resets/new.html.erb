@@ -17,17 +17,17 @@
       <% end %>
 
       <p class="text-sm text-gray-600 mb-5">
-        Enter the email address associated with your account and we'll generate a reset link for you.
+        Enter your username and we'll generate a reset link for you.
       </p>
 
       <%= form_with url: password_resets_path, method: :post do |f| %>
         <div class="mb-6">
-          <%= f.label :email, "Email address", class: "block text-sm font-medium text-gray-700 mb-1" %>
-          <%= f.email_field :email,
+          <%= f.label :login, "Username", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= f.text_field :login,
               autofocus: true,
-              autocomplete: "email",
+              autocomplete: "username",
               class: "w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
-              placeholder: "you@example.com" %>
+              placeholder: "Enter your username" %>
         </div>
 
         <%= f.submit "Send reset link",
