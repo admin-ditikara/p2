@@ -1,42 +1,14 @@
 services:
-  db:
-    image: postgres:16
-    restart: always
-    environment:
-      POSTGRES_DB: p2_production
-      POSTGRES_USER: p2
-      POSTGRES_PASSWORD: ${P2_DATABASE_PASSWORD}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - app_network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U p2 -d p2_production"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   app:
     build:
       context: ..
       dockerfile: Dockerfile
     restart: always
-    depends_on:
-      db:
-        condition: service_healthy
     environment:
       RAILS_ENV: production
-      DATABASE_URL: postgresql://p2:${P2_DATABASE_PASSWORD}@db/p2_production
+      DATABASE_URL: mysql2://pragma2_prd:${P2_DATABASE_PASSWORD}@104.197.173.67:3306/pragma2_prd
       RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
       RAILS_SERVE_STATIC_FILES: "true"
       RAILS_LOG_TO_STDOUT: "true"
     ports:
       - "127.0.0.1:3000:3000"
-    networks:
-      - app_network
-
-networks:
-  app_network:
-
-volumes:
-  postgres_data:
