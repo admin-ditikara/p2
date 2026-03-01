@@ -15,8 +15,6 @@ class Employee < ApplicationRecord
     [fn, ln].select(&:present?).join(' ').presence || login
   end
 
-  protected
-
   def encrypt(password)
     Digest::SHA1.hexdigest("--#{salt}--#{password}--")
   end
