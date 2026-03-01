@@ -37,9 +37,9 @@ class UploadsController < ApplicationController
 
     if File.exist?(path) && path.to_s.start_with?(UPLOAD_DIR.to_s)
       File.delete(path)
-      redirect_to uploads_path, notice: "\"#{filename}\" deleted."
+      redirect_to uploads_path, status: :see_other, notice: "\"#{filename}\" deleted."
     else
-      redirect_to uploads_path, alert: "File not found."
+      redirect_to uploads_path, status: :see_other, alert: "File not found."
     end
   end
 
