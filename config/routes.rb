@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   get  '/signup', to: 'employees#new',    as: :signup
   post '/signup', to: 'employees#create'
 
-  resources :uploads, only: [:index, :create, :destroy] do
+  resources :uploads, only: [:index, :create, :destroy], constraints: { id: /[^\/]+/ } do
     member do
       get :download
     end
