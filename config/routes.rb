@@ -12,9 +12,4 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "pages#home"
 
-  get  '/login',  to: 'sessions#new',     as: :login
-  post '/login',  to: 'sessions#create'
-  delete '/logout', to: 'sessions#destroy', as: :logout
-
-  resources :password_resets, only: %i[new create edit update]
 end
