@@ -12,14 +12,14 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "pages#home"
 
-  get    '/login',  to: 'sessions#new',     as: :login
-  post   '/login',  to: 'sessions#create'
-  delete '/logout', to: 'sessions#destroy', as: :logout
+  get    "/login",  to: "sessions#new",     as: :login
+  post   "/login",  to: "sessions#create"
+  delete "/logout", to: "sessions#destroy", as: :logout
 
-  get  '/signup', to: 'employees#new',    as: :signup
-  post '/signup', to: 'employees#create'
+  get  "/signup", to: "employees#new",    as: :signup
+  post "/signup", to: "employees#create"
 
-  resources :uploads, only: [:index, :create, :destroy], constraints: { id: /[^\/]+/ } do
+  resources :uploads, only: [ :index, :create, :destroy ], constraints: { id: /[^\/]+/ } do
     member do
       get :download
     end

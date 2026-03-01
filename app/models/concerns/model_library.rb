@@ -7,14 +7,14 @@ module ModelLibrary
     # Find active records (status_id <= status_limit) scoped by COSMOS options.
     def find_active(status_limit = 1, current_employee = nil)
       find_active_with_scope(
-        conditions: ["#{table_name}.status_id <= ?", status_limit],
+        conditions: [ "#{table_name}.status_id <= ?", status_limit ],
         current_employee: current_employee
       )
     end
 
     def count_active(status_limit = 1, current_employee = nil)
       count_with_scope(
-        conditions: ["#{table_name}.status_id <= ?", status_limit],
+        conditions: [ "#{table_name}.status_id <= ?", status_limit ],
         current_employee: current_employee
       )
     end
@@ -34,7 +34,7 @@ module ModelLibrary
             cond_arr << "(#{fn} is not null)"
           else
             cond_arr << "(#{fn} in (?))"
-            cond_params << [val].flatten
+            cond_params << [ val ].flatten
           end
         end
       end
@@ -51,23 +51,23 @@ module ModelLibrary
         asp_mode = defined?(ASP_MODE) && ASP_MODE
         if asp_mode && current_employee && new.respond_to?("x_pragma") && current_employee.attributes["x_pragma"].present?
           cond_str = "(#{cond_str}) and (x_pragma is null or x_pragma=?)"
-          return { conditions: [cond_str] + cond_params + [current_employee.attributes["x_pragma"]] }
+          { conditions: [ cond_str ] + cond_params + [ current_employee.attributes["x_pragma"] ] }
         else
-          return { conditions: ["(#{cond_str})"] + cond_params }
+          { conditions: [ "(#{cond_str})" ] + cond_params }
         end
       else
         restrictive = defined?(RESTRICTIVE_COSMOS) && RESTRICTIVE_COSMOS
         asp_mode    = defined?(ASP_MODE) && ASP_MODE
         def_ret = if restrictive
-          { conditions: ["((9=9) and (created_by=?))", current_employee.id] }
+          { conditions: [ "((9=9) and (created_by=?))", current_employee.id ] }
         else
-          { conditions: ["(9=9)"] }
+          { conditions: [ "(9=9)" ] }
         end
         if asp_mode && current_employee && new.respond_to?("x_pragma") && current_employee.attributes["x_pragma"].present?
           def_ret = if restrictive
-            { conditions: ["((9=9) and (created_by=?) and (x_pragma is null or x_pragma=?))", current_employee.id, current_employee.attributes["x_pragma"]] }
+            { conditions: [ "((9=9) and (created_by=?) and (x_pragma is null or x_pragma=?))", current_employee.id, current_employee.attributes["x_pragma"] ] }
           else
-            { conditions: ["((9=9) and (x_pragma is null or x_pragma=?))", current_employee.attributes["x_pragma"]] }
+            { conditions: [ "((9=9) and (x_pragma is null or x_pragma=?))", current_employee.attributes["x_pragma"] ] }
           end
         end
         return def_ret if self <= Project rescue false
@@ -76,12 +76,12 @@ module ModelLibrary
             prj_cosmos = Project.get_cosmos_options(current_employee, include_shares: false) rescue nil
             return def_ret if prj_cosmos.nil?
             prj_ids = Project.where(prj_cosmos[:conditions]).pluck(:id) rescue []
-            return { conditions: ["((project_id in (?)) or (project_id is null) or (created_by=?))", prj_ids, current_employee.to_i] }
+            { conditions: [ "((project_id in (?)) or (project_id is null) or (created_by=?))", prj_ids, current_employee.to_i ] }
           else
-            return def_ret
+            def_ret
           end
         else
-          return def_ret
+          def_ret
         end
       end
     end
@@ -129,7 +129,7 @@ module ModelLibrary
     # Reset sync flag before a new import.
     def reset_sync(need_ver = false)
       return 0 unless new.respond_to?("sync")
-      cond = defined?(Pragmatica) ? Pragmatica.cond.dup : ["1=1"]
+      cond = defined?(Pragmatica) ? Pragmatica.cond.dup : [ "1=1" ]
       cond[0] += " and sync=?"
       cond << 1
       c1 = count_with_scope(conditions: cond)
@@ -190,7 +190,7 @@ module ModelLibrary
 
   # Fetch the validator_min template record for this model.
   def validator_min
-    cond = ["(status_id=?)", Status.validator_min.id]
+    cond = [ "(status_id=?)", Status.validator_min.id ]
     if self.class.superclass.to_s == "ActiveRecord::Base" && attributes.include?("type")
       cond[0] += " and (type is null)"
     end
@@ -205,7 +205,7 @@ module ModelLibrary
 
   # Fetch the validator_max template record for this model.
   def validator_max
-    cond = ["(status_id=?)", Status.validator_max.id]
+    cond = [ "(status_id=?)", Status.validator_max.id ]
     if self.class.superclass.to_s == "ActiveRecord::Base" && attributes.include?("type")
       cond[0] += " and (type is null)"
     end
@@ -525,7 +525,7 @@ module ModelLibrary
     status_val_min   = Status.validator_min.id rescue nil
     status_val_max   = Status.validator_max.id rescue nil
 
-    if [status_master, status_val_min, status_val_max].include?(status_id)
+    if [ status_master, status_val_min, status_val_max ].include?(status_id)
       create_version(old_self) if ret
       return ret
     end
@@ -623,9 +623,9 @@ module ModelLibrary
     cua.flatten.sort.uniq.each do |k|
       asp_mode = defined?(ASP_MODE) && ASP_MODE
       u_size = if asp_mode && attributes["x_pragma"].present? && respond_to?("x_pragma")
-        self.class.where(["id<>? and #{k}=? and status_id<? and x_pragma=?", id.to_i, attributes[k], Status.deleted.id, attributes["x_pragma"]]).count
+        self.class.where([ "id<>? and #{k}=? and status_id<? and x_pragma=?", id.to_i, attributes[k], Status.deleted.id, attributes["x_pragma"] ]).count
       else
-        self.class.where(["id<>? and #{k}=? and status_id<?", id.to_i, attributes[k], Status.deleted.id]).count
+        self.class.where([ "id<>? and #{k}=? and status_id<?", id.to_i, attributes[k], Status.deleted.id ]).count
       end
       if u_size > 0
         em = (Em.error_for_field(table_nm, k, "unique") rescue nil)
@@ -668,7 +668,7 @@ module ModelLibrary
   # ---------------------------------------------------------------------------
 
   def do_post(action, employee, text, project_id = nil)
-    system_emp = defined?(Employee::_SYSTEM) ? Employee::_SYSTEM : nil
+    system_emp = defined?(Employee._SYSTEM) ? Employee._SYSTEM : nil
     system_generated = %w[internal_post customer_post new].include?(action) ? 0 : 1
     posts << Post.new(
       action:           action,
@@ -743,11 +743,11 @@ module ModelLibrary
           e.cosmos_cache[rule.resource_type] ||= []
           employee_id = e.id
           @rule_val = eval(rule.value) rescue nil
-          e.cosmos_cache[rule.resource_type] << { rule.fn => [@rule_val].flatten }
+          e.cosmos_cache[rule.resource_type] << { rule.fn => [ @rule_val ].flatten }
         end
       end
       e_cosmos = self.class.get_cosmos_options(e) rescue nil
-      e_cond   = e_cosmos ? e_cosmos[:conditions] : ["(status_id<=?)", Status.active.id]
+      e_cond   = e_cosmos ? e_cosmos[:conditions] : [ "(status_id<=?)", Status.active.id ]
       o2 = self.class.where(e_cond).find_by(id: id) rescue nil
       ids << e.id if o2
     end

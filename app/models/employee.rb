@@ -1,4 +1,4 @@
-require 'digest/sha1'
+require "digest/sha1"
 
 class Employee < ApplicationRecord
   ACTIVE_STATUS_ID = 1
@@ -24,7 +24,7 @@ class Employee < ApplicationRecord
   end
 
   def full_name
-    [fn, ln].select(&:present?).join(' ').presence || login
+    [ fn, ln ].select(&:present?).join(" ").presence || login
   end
 
   def encrypt(password)

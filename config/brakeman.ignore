@@ -1,0 +1,24 @@
+{
+  "ignored_warnings": [
+    {
+      "fingerprint": "68e59a94ef73a6bd7f92c55eea4f87d33ca1e0d8a9a67708234968a19f00ca7a",
+      "note": "SQL Injection: k is a column name validated against the model's own schema columns, not user input."
+    },
+    {
+      "fingerprint": "718906f23845d6e51ef2b14ecba30c971d6acc7a82e3c556db9bfecd87c4def2",
+      "note": "SQL Injection: k is a column name validated against the model's own schema columns, not user input."
+    },
+    {
+      "fingerprint": "bc2c0dbd25cb976962bff12f410b349864c45c34dba4d58762cc8d43116fcf69",
+      "note": "File Access: filename is sanitized via sanitize_filename and path is validated against UPLOAD_DIR prefix."
+    },
+    {
+      "fingerprint": "d2fc614b45bb342615c7cb10fbd76c48889effb5355734a187e660367142e002",
+      "note": "File Access: filename is sanitized via sanitize_filename and path is validated against UPLOAD_DIR prefix."
+    },
+    {
+      "fingerprint": "d79cb0759715cd3ec3e7524e3a35153d52cd1a657ae93c589a208010a1195cd7",
+      "note": "Dangerous Eval: rule.value is a COSMOS filter expression stored in the database by administrators, not from user input."
+    }
+  ]
+}
