@@ -51,9 +51,9 @@
               <td class="px-6 py-3 text-right whitespace-nowrap">
                 <%= link_to "Download", download_upload_path(file[:name]),
                     class: "text-blue-600 hover:underline mr-3" %>
-                <%= button_to "Delete", upload_path(file[:name]), method: :delete,
-                    data: { turbo_confirm: "Delete \"#{file[:name]}\"?" },
-                    class: "text-red-500 hover:underline bg-transparent border-0 p-0 cursor-pointer text-sm" %>
+                <%= link_to "Delete", upload_path(file[:name]),
+                    data: { "turbo-method": "delete" },
+                    class: "text-red-500 hover:underline" %>
               </td>
             </tr>
           <% end %>
