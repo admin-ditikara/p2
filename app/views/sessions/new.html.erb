@@ -33,22 +33,9 @@
               placeholder: "••••••••" %>
         </div>
 
-        <div class="relative">
-          <%= f.submit "Sign in",
-              id: "sign-in-btn",
-              class: "w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg text-sm cursor-pointer transition-colors" %>
-          <div id="loading-indicator" class="hidden flex items-center justify-center py-1">
-            <img src="/images/demCina_Loading.gif" alt="Loading..." class="h-10">
-          </div>
-        </div>
+        <%= f.submit "Sign in",
+            class: "w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg text-sm cursor-pointer transition-colors" %>
       <% end %>
-
-      <script>
-        document.querySelector("form").addEventListener("submit", function() {
-          document.getElementById("sign-in-btn").classList.add("hidden");
-          document.getElementById("loading-indicator").classList.remove("hidden");
-        });
-      </script>
 
       <div class="mt-5 text-center text-sm text-gray-500">
         Don't have an account?
