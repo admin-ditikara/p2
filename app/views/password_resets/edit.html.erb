@@ -1,11 +1,11 @@
-<% content_for :title, "Sign In" %>
+<% content_for :title, "Set New Password" %>
 
 <div class="min-h-screen bg-gray-50 flex items-center justify-center px-4">
   <div class="w-full max-w-md">
 
     <div class="text-center mb-8">
       <h1 class="text-3xl font-bold text-gray-900">P2</h1>
-      <p class="text-gray-500 mt-1">Sign in to your account</p>
+      <p class="text-gray-500 mt-1">Set a new password</p>
     </div>
 
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
@@ -16,28 +16,25 @@
         </div>
       <% end %>
 
-      <%= form_with url: login_path, method: :post do |f| %>
+      <%= form_with url: password_reset_path(params[:id]), method: :patch do |f| %>
         <div class="mb-5">
-          <%= f.label :email, "Email", class: "block text-sm font-medium text-gray-700 mb-1" %>
-          <%= f.email_field :email,
+          <%= f.label :password, "New password", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= f.password_field :password,
               autofocus: true,
-              autocomplete: "email",
+              autocomplete: "new-password",
               class: "w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
-              placeholder: "you@example.com" %>
+              placeholder: "Minimum 6 characters" %>
         </div>
 
         <div class="mb-6">
-          <div class="flex items-center justify-between mb-1">
-            <%= f.label :password, "Password", class: "block text-sm font-medium text-gray-700" %>
-            <%= link_to "Forgot password?", new_password_reset_path, class: "text-xs text-blue-600 hover:underline" %>
-          </div>
-          <%= f.password_field :password,
-              autocomplete: "current-password",
+          <%= f.label :password_confirmation, "Confirm new password", class: "block text-sm font-medium text-gray-700 mb-1" %>
+          <%= f.password_field :password_confirmation,
+              autocomplete: "new-password",
               class: "w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
               placeholder: "••••••••" %>
         </div>
 
-        <%= f.submit "Sign in",
+        <%= f.submit "Update password",
             class: "w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg text-sm cursor-pointer transition-colors" %>
       <% end %>
 
