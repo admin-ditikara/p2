@@ -53,6 +53,7 @@
                     class: "text-blue-600 hover:underline mr-3" %>
                 <%= link_to "Delete", upload_path(file[:name]),
                     data: { "turbo-method": "delete" },
+                    onclick: "return confirm('Delete #{j file[:name]}?')",
                     class: "text-red-500 hover:underline" %>
               </td>
             </tr>
